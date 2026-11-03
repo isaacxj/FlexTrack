@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/brand/flextrack-logo.png" alt="FlexTrack" width="520"></p>
+
 # FlexTrack
 
 A personal gym and body-weight tracker, self-hosted on my own server and used from my phone.
