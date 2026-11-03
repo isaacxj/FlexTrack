@@ -31,6 +31,7 @@ import { WC_DEFAULT } from '../lib/workout-controls.js'
 import { sanitizeAccent } from '../lib/accent.js'
 import { registerExerciseAliases } from '../lib/exercise-aliases.js'
 import { LB_ONLY } from '../lib/lb-only.js'
+import { APP_NAME, BRAND_ORANGE } from '../lib/brand.js'
 
 const KEY = 'gym_state_v1'
 // Where the saved copy stands with the server: the revision it descends from, and its own `_ts`
@@ -90,7 +91,7 @@ const gainedWorkoutMedia = (prev, next) => {
 }
 export const DEF = {
   unit: LB_ONLY ? 'lb' : 'kg', restSec: 90, restPauseSec: 15, sound: true, soundOnSilent: false, vibrateOnSilent: false, timerFlash: false, timedSetOvertime: false, keepAwake: true, lang: 'en',
-  theme: 'dark', accent: 'lime', body: 'male', targetW: null,
+  theme: 'dark', accent: APP_NAME === 'openGym' ? 'lime' : 'custom', ...(APP_NAME === 'openGym' ? {} : { accentCustom: BRAND_ORANGE }), body: 'male', targetW: null,
   // The weekly-rate corridor on the body-weight card (#759, lib/bodyweight.js rateCorridor).
   rateGoal: null,
   bodyweight: [], routines: [], week: {}, dayPlan: {},
@@ -683,6 +684,13 @@ export const useStore = create((set, get) => {
     // Pounds only (lib/lb-only.js): a profile still in kg is converted once, every stored weight
     // with it, and the conversion is pushed like any other change.
     if (LB_ONLY && (get().S.unit || 'kg') !== 'lb') get().setUnit('lb')
+    // The logo's orange as the accent, for a profile still on upstream's default: green, and never
+    // a colour of its own (`accentCustom` stays once one was picked, lib/accent.js), so a choice
+    // made in Settings is never undone.
+    const S0 = get().S
+    if (APP_NAME !== 'openGym' && (S0.accent || 'lime') === 'lime' && !S0.accentCustom) {
+      get().update(s => { s.accent = 'custom'; s.accentCustom = BRAND_ORANGE })
+    }
     if (pushPending && get().user) {
       clearTimeout(pushTm)
       pushTm = setTimeout(() => get().pushState(), 1500)

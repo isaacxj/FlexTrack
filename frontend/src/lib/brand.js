@@ -6,4 +6,7 @@ export const UPSTREAM_URL = 'https://github.com/DuarteSantos8/openGym'
 // Where Settings sends people for the source of what they are running (AGPL §13).
 export const SOURCE_URL = APP_NAME === 'openGym' ? UPSTREAM_URL : 'https://github.com/isaacxj/FlexTrack'
 
+// The logo's orange: the default accent here (store/useStore.js DEF and finishBoot).
+export const BRAND_ORANGE = '#d64a23'
+
 export const brand = s => (APP_NAME === 'openGym' || typeof s !== 'string' ? s : s.replaceAll('openGym', APP_NAME))

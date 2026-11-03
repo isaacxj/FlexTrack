@@ -26,6 +26,7 @@
 import { t, getLang, RTL_LANGS, dateLocale } from './i18n-core.js'
 import { MOBILE, printHtml } from './mobile.js'
 import { APP_NAME } from './brand.js'
+import { MARK_SVG } from './brand-mark.js'
 
 export const esc = str => String(str == null ? '' : str)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -44,11 +45,13 @@ export function probeMarks(probe) {
   return { s: id => mark('s', id), e: id => mark('e', id), h: id => mark('h', id) }
 }
 
-// The app icon (frontend/resources/icon.svg), drawn small: the lime dumbbell on its dark tile.
-export const LOGO_SVG = '<svg class="logo-mark" viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#0c0e12"/>'
+// The app icon (frontend/resources/icon.svg), drawn small: the lime dumbbell on its dark tile. This fork
+// prints its own heart mark instead (lib/brand-mark.js).
+const UPSTREAM_LOGO_SVG = '<svg class="logo-mark" viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#0c0e12"/>'
   + '<g fill="#a3e635"><rect x="80" y="242" width="352" height="28"/><rect x="80" y="199" width="36" height="114"/>'
   + '<rect x="131" y="169" width="47" height="174"/><rect x="334" y="169" width="47" height="174"/>'
   + '<rect x="396" y="199" width="36" height="114"/></g></svg>'
+export const LOGO_SVG = APP_NAME === 'openGym' ? UPSTREAM_LOGO_SVG : MARK_SVG('logo-mark')
 
 // "Page {0} of {1}" in the reader's language, as the content of an @page margin box: the text
 // around the two numbers comes from the translation, the numbers from CSS counters.
@@ -77,7 +80,7 @@ export const PRINT_CSS = `
   :root {
     --ink: #15171c; --ink-2: #3b404b; --muted: #6b7180; --faint: #9aa0ad;
     --rule: #e3e6ec; --rule-soft: #eff1f5; --tint: #f6f7f9;
-    --lime: #a3e635; --lime-ink: #4d7c0f; --lime-soft: #f1f9e1;
+    ${APP_NAME === 'openGym' ? '--lime: #a3e635; --lime-ink: #4d7c0f; --lime-soft: #f1f9e1;' : '--lime: #d64a23; --lime-ink: #a3361a; --lime-soft: #fbe9e3;'}
   }
   * { box-sizing: border-box; }
   html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }

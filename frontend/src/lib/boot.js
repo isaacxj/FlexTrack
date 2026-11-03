@@ -2,8 +2,8 @@ import { registerPlugin } from '@capacitor/core'
 
 // The boot screen in index.html: markup and CSS only, so the web image's CSP needs no new hash.
 // It goes once the app can draw, or on a script error before that, so it never lifts forever.
-// Never mid-move: the logo first finishes building (about 0.7 s), and once the bar is going up
-// and down it leaves when the bar is back on the floor, not halfway through a rep.
+// Never mid-move: the logo first finishes building (about 0.7 s), and once the heart is beating
+// it leaves between beats, not halfway through one.
 const BUILT_MS = 700, REP_DELAY_MS = 750, REP_MS = 1250
 
 export function bootWait(t, reduced) {
