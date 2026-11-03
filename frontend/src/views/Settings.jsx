@@ -61,6 +61,7 @@ import GymReminderPage, { GymEditPage } from './GymReminder.jsx'
 import { readGymConfig } from '../lib/gym-reminder.js'
 import { THEMES, inSeason, seasonChoice, activeSeason } from '../lib/seasonal.js'
 import { LB_ONLY } from '../lib/lb-only.js'
+import { APP_NAME, SOURCE_URL, UPSTREAM_URL } from '../lib/brand.js'
 
 /* Settings (v1.3.11). The root is one screen: an account card, eleven rows that each open a page
    (/settings/<page>), and a search over every row. Rare things live one level further down
@@ -966,14 +967,17 @@ export default function Settings({ page = null, find = null, via = null, entryKe
               subtitle={checking ? t('Checking…') : t('You have v{0}', __APP_VERSION__)}
               accessory="chevron"
               onClick={() => (updateInfo?.hasUpdate ? onUpdateRowClick() : checkNow())} />
-          : <Row icon="download" iconTint="var(--green)" title={t('Get the Android app')}
+          // Upstream's APK is upstream's app (kg, its own name), so this fork's web build doesn't offer it.
+          : APP_NAME === 'openGym' && <Row icon="download" iconTint="var(--green)" title={t('Get the Android app')}
               subtitle={t('Download the APK from opengym.ch')} accessory="chevron"
               onClick={() => window.open('https://opengym.ch/#download', '_blank', 'noopener')} />}
       </Section>
       {/* Support: the project's own donation pages, and on the iPhone a straight line to writing a
           review. Plain links, no pop-up asking for anything (App Store 5.6.1). */}
-      <Section title={t('Support openGym')} footer={t('openGym is free: no ads, no subscriptions, no tracking. A coffee keeps it that way.')}>
-        {MOBILE && ios && <Row icon="star" iconTint="var(--orange)" title={t('Rate openGym on the App Store')} accessory="chevron"
+      {/* In this fork the section credits upstream by name, untranslated: t() would rebrand it. */}
+      <Section title={APP_NAME === 'openGym' ? t('Support openGym') : 'Support openGym'}
+        footer={APP_NAME === 'openGym' ? t('openGym is free: no ads, no subscriptions, no tracking. A coffee keeps it that way.') : APP_NAME + ' is built on openGym by Duarte Santos, free and open source. A coffee helps keep it going.'}>
+        {MOBILE && ios && APP_NAME === 'openGym' && <Row icon="star" iconTint="var(--orange)" title={t('Rate openGym on the App Store')} accessory="chevron"
           onClick={() => window.open('https://apps.apple.com/app/id6822275400?action=write-review', '_blank', 'noopener')} />}
         <Row icon="heart" iconTint="var(--pink)" title={t('Buy me a coffee')} subtitle="Buy Me a Coffee" accessory="chevron"
           onClick={() => window.open('https://buymeacoffee.com/duartesantos', '_blank', 'noopener')} />
@@ -994,8 +998,9 @@ export default function Settings({ page = null, find = null, via = null, entryKe
           build there is no address bar and no about box, so without this there is no way to tell
           which build you are running, or whether an update actually installed. */}
       <div className="dim small sp-version">
-        openGym v{__APP_VERSION__} · {t('free & open source (AGPL v3)')}<br />
-        <a href="https://github.com/DuarteSantos8/openGym" target="_blank" rel="noopener">{t('Source code')}</a><br />
+        {APP_NAME} v{__APP_VERSION__} · {t('free & open source (AGPL v3)')}<br />
+        <a href={SOURCE_URL} target="_blank" rel="noopener">{t('Source code')}</a>
+        {APP_NAME !== 'openGym' && <> · based on <a href={UPSTREAM_URL} target="_blank" rel="noopener">openGym</a></>}<br />
         {/* Attribution the media licence asks for word for word (agreement §8c), so it is not translated */}
         Exercise media © Aliaksandr Makatserchyk, <a href="https://gymvisual.com/" target="_blank" rel="noopener">Gym visual</a>, gymvisual.com.
         Media licensed for use in openGym only; see <a href="https://github.com/DuarteSantos8/openGym/blob/main/NOTICE.md" target="_blank" rel="noopener">NOTICE.md</a>

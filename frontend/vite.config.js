@@ -122,6 +122,6 @@ export default defineConfig({
   // lower, scripts/check-bundle-syntax.mjs catches (its test builds the bundle).
   build: { chunkSizeWarningLimit: 1500, target: ['safari15', 'chrome100', 'firefox100', 'edge100'] },
   // Gives happy-dom tests a working localStorage on Node 24+ (#733).
-  // VITE_ANY_UNIT: upstream's tests run with the kg/lb choice; this fork ships pounds only (lib/lb-only.js).
-  test: { setupFiles: ['./src/test-setup.js'], env: { VITE_ANY_UNIT: '1' } }
+  // Upstream's tests run as upstream: the kg/lb choice (lib/lb-only.js) and the openGym name (lib/brand.js).
+  test: { setupFiles: ['./src/test-setup.js'], env: { VITE_ANY_UNIT: '1', VITE_APP_NAME: 'openGym' } }
 })

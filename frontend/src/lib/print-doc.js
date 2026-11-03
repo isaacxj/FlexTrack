@@ -25,6 +25,7 @@
 // renders the PDF.
 import { t, getLang, RTL_LANGS, dateLocale } from './i18n-core.js'
 import { MOBILE, printHtml } from './mobile.js'
+import { APP_NAME } from './brand.js'
 
 export const esc = str => String(str == null ? '' : str)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -148,13 +149,13 @@ export function printShell({ title, kicker = '', facts = [], owner = '', date, b
 ${css}</style></head>
 <body><div class="doc">
   <header class="mast keep">
-    <div class="mast-top"><div class="brand">${LOGO_SVG}<span>openGym</span></div><div class="mast-meta">${meta}</div></div>
+    <div class="mast-top"><div class="brand">${LOGO_SVG}<span>${esc(APP_NAME)}</span></div><div class="mast-meta">${meta}</div></div>
     ${kicker ? `<div class="kicker">${esc(kicker)}</div>` : ''}
     <h1>${esc(title)}</h1>
     ${factLine ? `<div class="facts">${factLine}</div>` : ''}
   </header>
   ${body}
-  <div class="end keep">${esc(t('Made with openGym'))} · opengym.ch</div>
+  <div class="end keep">${esc(t('Made with openGym'))}</div>
 </div></body></html>`
 }
 
@@ -204,7 +205,7 @@ function printInFrame(html) {
  * suggested PDF file; Android refuses a job without one.
  */
 export function printDocument(html, name) {
-  if (MOBILE) return printHtml(html, name || 'openGym', printOptions()).catch(() => { /* dismissed */ })
+  if (MOBILE) return printHtml(html, name || APP_NAME, printOptions()).catch(() => { /* dismissed */ })
   printInFrame(html)
   return Promise.resolve()
 }
