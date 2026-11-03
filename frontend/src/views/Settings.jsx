@@ -60,6 +60,7 @@ import { csvExportSheet } from '../components/CsvExportSheet.jsx'
 import GymReminderPage, { GymEditPage } from './GymReminder.jsx'
 import { readGymConfig } from '../lib/gym-reminder.js'
 import { THEMES, inSeason, seasonChoice, activeSeason } from '../lib/seasonal.js'
+import { LB_ONLY } from '../lib/lb-only.js'
 
 /* Settings (v1.3.11). The root is one screen: an account card, eleven rows that each open a page
    (/settings/<page>), and a search over every row. Rare things live one level further down
@@ -759,11 +760,13 @@ export default function Settings({ page = null, find = null, via = null, entryKe
           </Row>
         </>}
       </Section>
-      <Section footer={t('Switching the unit offers to convert every stored weight.')}>
+      <Section footer={LB_ONLY ? null : t('Switching the unit offers to convert every stored weight.')}>
         <Row icon="scale" iconTint="var(--teal)" title={t('Weight unit')}>
-          <Segmented className="seg-inline"
-            options={[{ value: 'kg', label: 'kg' }, { value: 'lb', label: 'lb' }]}
-            value={S.unit} onChange={v => switchUnit(v)} />
+          {LB_ONLY
+            ? <span className="small">lb</span>
+            : <Segmented className="seg-inline"
+              options={[{ value: 'kg', label: 'kg' }, { value: 'lb', label: 'lb' }]}
+              value={S.unit} onChange={v => switchUnit(v)} />}
         </Row>
         {/* Display only: one decimal reads fine for plate-loadable numbers, two for anyone whose
             per-side figure lands on .25 or .75, or who loads microplates (issue #139). Nothing is
