@@ -7,6 +7,7 @@ import { useUI } from '../store/useUI.js'
 import { openLostAccess } from '../components/LostAccess.jsx'
 import { t } from '../lib/i18n.js'
 import Icon from '../components/Icon.jsx'
+import BrandMark from '../components/BrandMark.jsx'
 import { Button } from '../components/ui.jsx'
 import { askAddDeviceData } from '../sheets.jsx'
 import { normalizeServerUrl } from '../lib/remote.js'
@@ -142,7 +143,7 @@ export function ConnectSheet({ close, initialUrl = '', again = false }) {
 export default function MobileOnboarding() {
   const { chooseLocalMode } = useStore()
   const head = <>
-    <div style={{ fontSize: 54, display: 'flex', justifyContent: 'center', color: 'var(--acc)' }}><Icon name="dumbbell" /></div>
+    <div style={{ fontSize: 54, display: 'flex', justifyContent: 'center', color: 'var(--acc)' }}>{APP_NAME === 'openGym' ? <Icon name="dumbbell" /> : <BrandMark />}</div>
     <h1 style={{ fontSize: 34, fontWeight: 700, letterSpacing: '-.028em', margin: '10px 0 4px' }}>{APP_NAME}</h1>
   </>
   const wrap = { display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '78vh', textAlign: 'center' }
